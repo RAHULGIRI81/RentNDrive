@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "487497986959",
+    "project_id": "rentme-548d8",
+    "storage_bucket": "rentme-548d8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:487497986959:android:d20d06b554b1fefbcf51fa",
+        "android_client_info": {
+          "package_name": "com.example.rent_me"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCn0YF5JcdXeLd7d7i0_H1IOxH7UVdEzyc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
