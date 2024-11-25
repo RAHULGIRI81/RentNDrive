@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Add_car.dart';
-import 'package:rent_me/RentNDrive/Owner/Owner_Booking_info.dart';
+import 'package:rent_me/RentNDrive/Owner/Owner_Booking.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_available_info.dart';
 
 class Owner_Navigation extends StatefulWidget {
@@ -14,7 +14,7 @@ class _Owner_NavigationState extends State<Owner_Navigation> {
 
   static List<Widget> _widgetOptions = <Widget>[
     const Owner_Add_car(),
-    const OwnerBookingInfo(),
+    const Owner_Booking(),
     Owner_Available_info(),
   ];
 

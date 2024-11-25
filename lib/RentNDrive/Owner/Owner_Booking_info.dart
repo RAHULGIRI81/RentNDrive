@@ -1,69 +1,113 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rent_me/main.dart';
 
-class OwnerBookingInfo extends StatefulWidget {
-  const OwnerBookingInfo({super.key});
-
-  @override
-  State<OwnerBookingInfo> createState() => _OwnerBookingInfoState();
+void main() {
+  runApp(Owner_Booking_information());
 }
 
-class _OwnerBookingInfoState extends State<OwnerBookingInfo> {
+class Owner_Booking_information extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body:
-    Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-            itemCount: 4,
-            itemBuilder: (context, index) {
-              return Card(
-                margin: EdgeInsets.all(10.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Color(0xFF4C7746),
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 200,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Color(0xFF4C7746), Colors.white],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          ),
-                        ),
-                        child: Image.asset("assets/Acura.png",
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Container(
-                        color: Color(0xFF4C7746),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Acura",
-                            style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.bold, fontSize: 30),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
+    return MaterialApp(
+      home: BookingInformationScreen(),
+    );
+  }
+}
+
+class BookingInformationScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Booking Information', style: TextStyle(fontSize: 24)),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, size: 24),
+          onPressed: () {
+            // Handle back button press
+          },
         ),
-      ],
-    ),);
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Booking Status:',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            Container(
+              width: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(70),
+                color: Colors.green.shade900,
+              ),
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Confirmed',
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
+            Text(
+              'Rental Period:',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            TextField(),
+            SizedBox(height: 16),
+            Text(
+              'Start Date & Time:',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            TextField(),
+            SizedBox(height: 16),
+            Text(
+              'End Date & Time:',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            TextField(),
+            SizedBox(height: 16),
+            Text(
+              'Payment:',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            Container(
+              width: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(70),
+                color: Colors.green.shade900,
+              ),
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Paid',
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
+            Text(
+              'Customer Information',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 16),
+            Text(
+              'Name:',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            TextField(),
+            SizedBox(height: 16),
+            Text(
+              'Phone:',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            TextField(),
+          ],
+        ),
+      ),
+    );
   }
 }
