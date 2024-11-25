@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:rent_me/RentNDrive/Admin/Admin_Home.dart';
+import 'package:rent_me/RentNDrive/Admin/Admin_Total_cars.dart';
 import 'package:rent_me/RentNDrive/Admin/Admin_owner_verify.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Add_car.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Add_car_deatils.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Login.dart';
-import 'package:rent_me/RentNDrive/Owner/Owner_Booking_info.dart';
+import 'package:rent_me/RentNDrive/Owner/Owner_Booking.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_sign_up.dart';
 import 'RentNDrive/Admin/Admin_Login.dart';
 import 'firebase_options.dart';
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: Owner_Login()
+        home: AdminTotalCars()
       ),
       designSize:  Size(412,892),
     );

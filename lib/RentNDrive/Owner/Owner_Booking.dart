@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Booking_info.dart';
+import 'package:rent_me/RentNDrive/Owner/Owner_Navigation.dart';
 
 class Owner_Booking extends StatefulWidget {
   const Owner_Booking({super.key});
@@ -15,7 +16,7 @@ class _Owner_BookingState extends State<Owner_Booking> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar( title: Text("Booking "),),
+    return Scaffold(appBar: AppBar( title: Text("Booking "),leading: IconButton(onPressed: () => Owner_Navigation.new(), icon: Icon(Icons.arrow_back),),),
       body:
     Column(
       children: [
@@ -46,8 +47,10 @@ class _Owner_BookingState extends State<Owner_Booking> {
                             topRight: Radius.circular(20),
                           ),
                         ),
-                        child: Image.asset("assets/Acura.png",
-                          fit: BoxFit.cover,
+                        child: Container(height: 100,width: 100,
+                          child: Image.asset("assets/Acura.png",
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       InkWell(onTap: () {

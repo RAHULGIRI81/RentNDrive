@@ -91,7 +91,7 @@ class DashboardCard extends StatelessWidget {
             SizedBox(height: 10),
             Text(
               label,
-              style: GoogleFonts.poppins(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),
+              style: GoogleFonts.poppins(fontWeight: FontWeight.bold,fontSize: 23,color: Colors.white),
             ),
             SizedBox(height: 10),
             Text(

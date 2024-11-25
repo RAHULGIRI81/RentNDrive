@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rent_me/RentNDrive/Owner/Owner_Booking.dart';
 import 'package:rent_me/main.dart';
 
-void main() {
-  runApp(Owner_Booking_information());
-}
 
 class Owner_Booking_information extends StatelessWidget {
   @override
@@ -24,6 +22,7 @@ class BookingInformationScreen extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, size: 24),
           onPressed: () {
+            Navigator.pop(context);
             // Handle back button press
           },
         ),
