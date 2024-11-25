@@ -75,7 +75,7 @@ class _Owner_LoginState extends State<Owner_Login> {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 100.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 60.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -199,11 +199,11 @@ class _Owner_LoginState extends State<Owner_Login> {
                 ),
 
 
-                SizedBox(height: 30.h),
+                SizedBox(height: 25.h),
                 GestureDetector(
                   onTap: () {},
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                    padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.white,width: 2),
                       borderRadius: BorderRadius.circular(5.0),

@@ -14,7 +14,7 @@ class _Owner_NavigationState extends State<Owner_Navigation> {
 
   static List<Widget> _widgetOptions = <Widget>[
     const Owner_Add_car(),
-    const Owner_Booking_info(),
+    const OwnerBookingInfo(),
     Owner_Available_info(),
   ];
 
