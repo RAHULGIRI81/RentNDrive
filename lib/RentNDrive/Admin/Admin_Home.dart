@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rent_me/RentNDrive/Admin/Admin_Payment_details_list.dart';
+import 'package:rent_me/RentNDrive/Admin/Admin_Total_cars.dart';
+import 'package:rent_me/RentNDrive/Admin/Admin_Total_owners_list.dart';
+import 'package:rent_me/RentNDrive/Admin/Admin_Total_users.dart';
+import 'package:rent_me/RentNDrive/Admin/Admin_User_details.dart';
+import 'package:rent_me/RentNDrive/Admin/Admin_User_verify_list.dart';
+import 'package:rent_me/RentNDrive/Admin/Admin_User_verify_details.dart';
+import 'package:rent_me/RentNDrive/Admin/Admin_owners_verify_list.dart';
 
 class AdminHome extends StatefulWidget {
   const AdminHome({super.key});
@@ -31,35 +39,71 @@ class _AdminHomeState extends State<AdminHome> {
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
               children: [
-                DashboardCard(
-                  icon: Icons.directions_car,
-                  label: 'Total Cars',
-                  value: '20',
+                InkWell( onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return Admin_Total_Cars();
+                  },));
+                },
+                  child: DashboardCard(
+                    icon: Icons.directions_car,
+                    label: 'Total Cars',
+                    value: '20',
+                  ),
                 ),
-                DashboardCard(
-                  icon: Icons.person,
-                  label: 'Total Users',
-                  value: '20',
+                InkWell(onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return Admin_Total_users();
+                  },));
+                },
+                  child: DashboardCard(
+                    icon: Icons.person,
+                    label: 'Total Users',
+                    value: '20',
+                  ),
                 ),
-                DashboardCard(
-                  icon: Icons.account_balance_wallet,
-                  label: 'Payment',
-                  value: '300',
+                InkWell(onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return Admin_user_payment_details();
+                  },));
+                },
+                  child: DashboardCard(
+                    icon: Icons.account_balance_wallet,
+                    label: 'Payment',
+                    value: '300',
+                  ),
                 ),
-                DashboardCard(
-                  icon: Icons.people,
-                  label: 'Owners',
-                  value: '15',
+                InkWell(onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return Admin_Total_owners();
+                  },));
+                },
+                  child: DashboardCard(
+                    icon: Icons.people,
+                    label: 'Owners',
+                    value: '15',
+                  ),
                 ),
-                DashboardCard(
-                  icon: Icons.verified_user,
-                  label: 'Verify User',
-                  value: '30',
+                InkWell(onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return Admin_Total_users_verify();
+                  },));
+                },
+                  child: DashboardCard(
+                    icon: Icons.verified_user,
+                    label: 'Verify User',
+                    value: '30',
+                  ),
                 ),
-                DashboardCard(
-                  icon: Icons.verified_user,
-                  label: 'VerifyOwner ',
-                  value: '12',
+                InkWell(onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return Admin_owners_verify_list();
+                  },));
+                },
+                  child: DashboardCard(
+                    icon: Icons.verified_user,
+                    label: 'VerifyOwner ',
+                    value: '12',
+                  ),
                 ),
               ],
             ),

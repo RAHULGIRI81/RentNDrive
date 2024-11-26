@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rent_me/RentNDrive/Admin/Admin_owners_verify_list.dart';
 
 class Admin_Owner_Verify extends StatefulWidget {
   const Admin_Owner_Verify({super.key});
@@ -18,7 +19,11 @@ class _Admin_Owner_VerifyState extends State<Admin_Owner_Verify> {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back_ios),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+      onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => Admin_owners_verify_list(),)),
+      // Handle back button press
+    ),
         title: Text('Verify Owner'),
       ),
       body: Padding(
@@ -161,7 +166,7 @@ class _Admin_Owner_VerifyState extends State<Admin_Owner_Verify> {
                   width: 300,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
-                    color: Colors.green.shade800,
+                    color: Colors.black,
                   ),
                   child: Center(
                     child: Text(

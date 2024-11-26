@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:rent_me/RentNDrive/Admin/Admin_Home.dart';
 
 class Admin_user_details extends StatelessWidget {
   @override
@@ -16,6 +16,9 @@ class UserDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('User Details'),
+        leading: IconButton(
+            onPressed: () =>  Navigator.push(context,MaterialPageRoute(builder: (context) => AdminHome(),)),
+            icon: Icon(Icons.arrow_back)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -34,11 +37,17 @@ class UserDetailsScreen extends StatelessWidget {
             SizedBox(height: 8),
             Text('License:', style: TextStyle(fontSize: 16)),
             SizedBox(height: 16),
-            Image.asset("assets/Licence.jpg",height: 200,),
+            Image.asset(
+              "assets/Licence.jpg",
+              height: 200,
+            ),
             SizedBox(height: 16),
             Text('Photo:', style: TextStyle(fontSize: 16)),
             SizedBox(height: 8),
-            Image.asset("assets/person.png",height: 200,),
+            Image.asset(
+              "assets/person.png",
+              height: 200,
+            ),
           ],
         ),
       ),

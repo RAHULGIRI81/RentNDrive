@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: AdminTotalCars()
+        home: AdminHome()
       ),
       designSize:  Size(412,892),
     );

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:rent_me/RentNDrive/Admin/Admin_Home.dart';
 import 'package:rent_me/RentNDrive/Admin/Admin_User_details.dart';
+import 'package:rent_me/RentNDrive/Admin/Admin_User_verify_details.dart';
+import 'package:rent_me/RentNDrive/Admin/Admin_owner_verify.dart';
 
 
 
-class Admin_Total_users extends StatelessWidget {
+class Admin_Total_owners extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,35 +22,36 @@ class UserListScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-         onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => AdminHome(),)),
+          onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => AdminHome(),));
             // Handle back button press
+          },
         ),
-        title: Text('Users'),
+        title: Text('Owners'),
       ),
       body: ListView.builder(
         itemCount: 7, // Number of user profiles
         itemBuilder: (context, index) {
           return InkWell(onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return Admin_user_details();
+              return Admin_Owner_Verify();
             },));
           },
             child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              color: Color(0xFF4C7746),
-              child: ListTile(
-                leading: Icon(Icons.person, color: Colors.white),
-                title: Text(
-                  'User_Name :',
-                  style: TextStyle(color: Colors.white),
-                ),
-                subtitle: Text(
-                  'Phone :',
-                  style: TextStyle(color: Colors.white),
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                color: Color(0xFF4C7746),
+                child: ListTile(
+                  leading: Icon(Icons.person, color: Colors.white),
+                  title: Text(
+                    'Name :',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  subtitle: Text(
+                    'Phone :',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
-            ),
             ),
           );
         },
