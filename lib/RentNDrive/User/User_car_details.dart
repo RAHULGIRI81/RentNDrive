@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:rent_me/RentNDrive/Admin/Admin_Total_cars.dart';
+import 'package:rent_me/RentNDrive/User/User_home.dart';
 
-class Admin_Car_details extends StatelessWidget {
+class User_Car_details extends StatelessWidget {
+  bool _isChecked = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,7 +14,7 @@ class Admin_Car_details extends StatelessWidget {
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(
                 builder: (context) {
-                  return Admin_Total_Cars();
+                  return UserHome();
                 },
               ));
               // Add back button functionality here
@@ -74,7 +77,7 @@ class Admin_Car_details extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    height: 600.0, // Set a fixed height for the GridView
+                    height: 270.0, // Set a fixed height for the GridView
                     child: GridView.count(
                       crossAxisCount: 3,
                       crossAxisSpacing: 12.0,
@@ -202,9 +205,67 @@ class Admin_Car_details extends StatelessWidget {
                         ),
                       ],
                     ),
-                  )
+
+                  ),
+                  Row(
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Checkbox(
+                                value: _isChecked,
+                                onChanged: (bool? value) {
+                                  (() {
+                                    _isChecked = value ?? false;
+                                  });
+                                },
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'I agree to the ',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    TextSpan(
+                                      text: 'Terms&Privacy',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                      text: ' policy',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20),
+
+                        ],
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 70),
+                    child: ElevatedButton(
+                      onPressed: _isChecked ? () {} : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,disabledBackgroundColor: Color(0xFF4C7746),
+                        padding:
+                        EdgeInsets.symmetric(horizontal: 100, vertical: 20),
+                      ),
+                      child: Text('Book Cars',style: GoogleFonts.poppins(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white),),
+                    ),
+                  ),
                 ],
               ),
+
             ]),
           ),
         ));

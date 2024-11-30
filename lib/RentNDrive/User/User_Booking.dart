@@ -2,26 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rent_me/RentNDrive/Admin/Admin_Home.dart';
 import 'package:rent_me/RentNDrive/Admin/Admin_Total_car_details.dart';
+import 'package:rent_me/RentNDrive/User/User_Booking_cancel.dart';
+import 'package:rent_me/RentNDrive/User/User_Navigation.dart';
 
-class Admin_Total_Cars extends StatefulWidget {
-  const Admin_Total_Cars({super.key});
+class User_booking extends StatefulWidget {
+  const User_booking({super.key});
 
   @override
-  State<Admin_Total_Cars> createState() => _Admin_Total_CarsState();
+  State<User_booking> createState() => _User_bookingState();
 }
 
-class _Admin_Total_CarsState extends State<Admin_Total_Cars> {
+class _User_bookingState extends State<User_booking> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Total Cars"),
-        backgroundColor: Color(0xFF4C7746),
+        title: Text("Booking"),
         leading: IconButton(
           onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => AdminHome(),
+                builder: (context) => User_navigation(),
               )),
           icon: Icon(Icons.arrow_back),
         ),
@@ -33,13 +34,13 @@ class _Admin_Total_CarsState extends State<Admin_Total_Cars> {
             SizedBox(height: 10),
             Expanded(
               child: ListView.builder(
-                itemCount: 4,
+                itemCount: 2,
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) {
-                          return Admin_Car_details();
+                          return user_booking_cancel();
                         },
                       ));
                     },
@@ -96,7 +97,7 @@ class _Admin_Total_CarsState extends State<Admin_Total_Cars> {
                                             ),
                                           ),
                                           Text(
-                                            '\$1500/day',
+                                            'Date',
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20,
@@ -108,7 +109,7 @@ class _Admin_Total_CarsState extends State<Admin_Total_Cars> {
                                             onPressed: () {
                                               Navigator.push(context, MaterialPageRoute(
                                                 builder: (context) {
-                                                  return Admin_Car_details();
+                                                  return user_booking_cancel();
                                                 },
                                               ));
                                             },
@@ -118,7 +119,7 @@ class _Admin_Total_CarsState extends State<Admin_Total_Cars> {
                                                 borderRadius: BorderRadius.circular(10),
                                               ),
                                             ),
-                                            child: Text('View Details',style: TextStyle(color: Colors.white),),
+                                            child: Text('Booking',style: TextStyle(color: Colors.white),),
                                           ),
                                         ],
                                       ),

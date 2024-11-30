@@ -5,6 +5,7 @@ import 'package:rent_me/RentNDrive/Owner/Owner%20Profile.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Edit_car_details.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_FeedBack_page.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Privacy_Policy.dart';
+import 'package:rent_me/RentNDrive/pagemain.dart';
 import 'package:rent_me/main.dart';
 
 class Owner_Settings extends StatefulWidget {
@@ -89,7 +90,9 @@ class _Owner_SettingsState extends State<Owner_Settings> {
             SizedBox(height: 200.h,),
             ListTile(
               leading: Icon(Icons.logout),
-              title: Text('LogOut'),
+              title: Text('LogOut'),onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AdminApp(),));
+              },
             ),
           ],
         ),
