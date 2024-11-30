@@ -13,10 +13,13 @@ class User_drawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text('User Name', style: TextStyle(color: Colors.white, fontSize: 24)),
-            accountEmail: Text('user@example.com', style: TextStyle(color: Colors.white)),
+            accountName: Text('User Name',
+                style: TextStyle(color: Colors.white, fontSize: 24)),
+            accountEmail:
+                Text('user@example.com', style: TextStyle(color: Colors.white)),
             currentAccountPicture: CircleAvatar(
-              backgroundImage: NetworkImage('https://via.placeholder.com/150'), // Replace with your image URL
+              backgroundImage: NetworkImage(
+                  'https://via.placeholder.com/150'), // Replace with your image URL
             ),
             decoration: BoxDecoration(
               color: Color(0xFF4C7746),
@@ -32,7 +35,11 @@ class User_drawer extends StatelessWidget {
               ),
             ),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => User_Profile(),)); // Close the drawer
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => User_Profile(),
+                  )); // Close the drawer
               // Add navigation logic here
             },
           ),
@@ -47,7 +54,11 @@ class User_drawer extends StatelessWidget {
               ),
             ),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => User_Privacy_Policy(),)); // Close the drawer
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => User_Privacy_Policy(),
+                  )); // Close the drawer
               // Add navigation logic here
             },
           ),
@@ -61,7 +72,11 @@ class User_drawer extends StatelessWidget {
               ),
             ),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => User_feedback(),)); // Close the drawer
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => User_feedback(),
+                  )); // Close the drawer
               // Add navigation logic here
             },
           ),
@@ -76,7 +91,11 @@ class User_drawer extends StatelessWidget {
               ),
             ),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => AdminApp(),)); // Close the drawer
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AdminApp(),
+                  )); // Close the drawer
               // Add logout functionality here
             },
           ),
