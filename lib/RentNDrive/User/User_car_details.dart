@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rent_me/RentNDrive/Admin/Admin_Total_cars.dart';
 import 'package:rent_me/RentNDrive/User/User_home.dart';
+import 'package:rent_me/RentNDrive/User/User_slot_Booking.dart';
 
 class User_Car_details extends StatelessWidget {
   bool _isChecked = false;
@@ -254,7 +255,9 @@ class User_Car_details extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 70),
                     child: ElevatedButton(
-                      onPressed: _isChecked ? () {} : null,
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => User_slot_booking(onBookingConfirmed: (DateTime value) {  },),));
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,disabledBackgroundColor: Color(0xFF4C7746),
                         padding:

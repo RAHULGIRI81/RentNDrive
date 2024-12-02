@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Add_car.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Login.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Navigation.dart';
+import 'package:rent_me/RentNDrive/Owner/Owner_Settings.dart';
 import 'package:rent_me/main.dart';
 
 class Owner_Edit_car_details extends StatefulWidget {
@@ -69,8 +70,8 @@ class _Owner_Edit_car_detailsState extends State<Owner_Edit_car_details> {
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
-      child: Scaffold(appBar: AppBar(leading: IconButton(onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => Owner_Add_car(),)), icon: Center(child: Icon(Icons.arrow_back_ios))),title: Text(
-        "Edit CARDETAILS",
+      child: Scaffold(appBar: AppBar(leading: IconButton(onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => Owner_Settings(),)), icon: Center(child: Icon(Icons.arrow_back_ios))),title: Text(
+        "Edit CAR DETAILS",
         style: GoogleFonts.poppins(
           fontWeight: FontWeight.bold,
         ),

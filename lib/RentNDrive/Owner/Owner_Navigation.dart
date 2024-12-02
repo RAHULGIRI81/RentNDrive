@@ -15,7 +15,7 @@ class _Owner_NavigationState extends State<Owner_Navigation> {
   static List<Widget> _widgetOptions = <Widget>[
     const Owner_Add_car(),
     const Owner_Booking(),
-    Owner_Available_info(),
+    OwnerBookingStatus()
   ];
 
   void _onItemTapped(int index) {
@@ -31,9 +31,9 @@ class _Owner_NavigationState extends State<Owner_Navigation> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: ConvexAppBar(
-        backgroundColor: Color(0xFF416E29), // Background color
-        activeColor: Colors.white, // Active item color
-        color: Colors.white, // Inactive item color
+        backgroundColor: Colors.white, // Background color
+        activeColor: Colors.black, // Active item color
+        color: Colors.black, // Inactive item color
         items: const <TabItem>[
           TabItem(icon: Icons.grid_view, title: 'Home'),
           TabItem(icon: Icons.menu, title: 'Booking'),

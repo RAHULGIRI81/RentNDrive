@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Add_car.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Login.dart';
+import 'package:rent_me/RentNDrive/Owner/Owner_Navigation.dart';
 import 'package:rent_me/main.dart';
 
 class Owner_Add_car_details extends StatefulWidget {
@@ -68,7 +69,7 @@ class _Owner_Add_car_detailsState extends State<Owner_Add_car_details> {
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
-      child: Scaffold(appBar: AppBar(leading: IconButton(onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => Owner_Add_car(),)), icon: Center(child: Icon(Icons.arrow_back_ios))),title: Text(
+      child: Scaffold(appBar: AppBar(leading: IconButton(onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => Owner_Navigation(),)), icon: Center(child: Icon(Icons.arrow_back_ios))),title: Text(
         "ADD CAR",
         style: GoogleFonts.poppins(
           fontWeight: FontWeight.bold,

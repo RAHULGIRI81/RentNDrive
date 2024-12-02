@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner%20Profile.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Edit_car_details.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_FeedBack_page.dart';
+import 'package:rent_me/RentNDrive/Owner/Owner_Navigation.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Privacy_Policy.dart';
 import 'package:rent_me/RentNDrive/pagemain.dart';
 import 'package:rent_me/main.dart';
@@ -18,7 +19,7 @@ class Owner_Settings extends StatefulWidget {
 class _Owner_SettingsState extends State<Owner_Settings> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar( title: Text('Settings'), leading: IconButton( icon: Icon(Icons.arrow_back), onPressed: () { Navigator.pop(context); }, ), ),
+    return Scaffold(appBar: AppBar( title: Text('Settings'), leading: IconButton( icon: Icon(Icons.arrow_back), onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => Owner_Navigation(),));}, ), ),
       body: Padding(
         padding: const EdgeInsets.only(top: 70,right: 20,left: 20),
         child: Column(

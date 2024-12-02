@@ -22,7 +22,7 @@ class BookingInformationScreen extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, size: 24),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(context,  MaterialPageRoute(builder: (context) => Owner_Booking(),));
             // Handle back button press
           },
         ),
