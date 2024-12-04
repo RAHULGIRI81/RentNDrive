@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:rent_me/RentNDrive/User/User_car_details.dart';
 import 'package:rent_me/RentNDrive/User/User_verify.dart';
 
-void main() {
-  runApp(User_book_car());
-}
-
 class User_book_car extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
