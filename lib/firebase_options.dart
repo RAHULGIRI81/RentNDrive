@@ -41,48 +41,48 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDZq-0gAhi-8HvX3TXv3k8KGB4OQJj_APo',
-    appId: '1:487497986959:web:b0fe24e9713c7123cf51fa',
-    messagingSenderId: '487497986959',
-    projectId: 'rentme-548d8',
-    authDomain: 'rentme-548d8.firebaseapp.com',
-    storageBucket: 'rentme-548d8.firebasestorage.app',
-    measurementId: 'G-CLGFJ4KKC8',
+    apiKey: 'AIzaSyA3nS6WsxpjAKsTPffHHaxfhF-pvaWqjV0',
+    appId: '1:958076113979:web:e0dc44e72299ec7a85b81e',
+    messagingSenderId: '958076113979',
+    projectId: 'rent-n-drive-f6468',
+    authDomain: 'rent-n-drive-f6468.firebaseapp.com',
+    storageBucket: 'rent-n-drive-f6468.firebasestorage.app',
+    measurementId: 'G-QL95CX33M3',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCn0YF5JcdXeLd7d7i0_H1IOxH7UVdEzyc',
-    appId: '1:487497986959:android:d20d06b554b1fefbcf51fa',
-    messagingSenderId: '487497986959',
-    projectId: 'rentme-548d8',
-    storageBucket: 'rentme-548d8.firebasestorage.app',
+    apiKey: 'AIzaSyCdz1AY7c1pN-aRMO5DlrDAnPoK7m0m4VM',
+    appId: '1:958076113979:android:5f9f3f91cb789ba185b81e',
+    messagingSenderId: '958076113979',
+    projectId: 'rent-n-drive-f6468',
+    storageBucket: 'rent-n-drive-f6468.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDUQua5PVdLP_nJL7A2IAUvB4SJmxFqGbU',
-    appId: '1:487497986959:ios:9765a4dd14396c62cf51fa',
-    messagingSenderId: '487497986959',
-    projectId: 'rentme-548d8',
-    storageBucket: 'rentme-548d8.firebasestorage.app',
+    apiKey: 'AIzaSyCq2sUlDwzuUf3SW7mT4AC8PprfDCb9BRM',
+    appId: '1:958076113979:ios:e9dc8e8080d0e89d85b81e',
+    messagingSenderId: '958076113979',
+    projectId: 'rent-n-drive-f6468',
+    storageBucket: 'rent-n-drive-f6468.firebasestorage.app',
     iosBundleId: 'com.example.rentMe',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDUQua5PVdLP_nJL7A2IAUvB4SJmxFqGbU',
-    appId: '1:487497986959:ios:9765a4dd14396c62cf51fa',
-    messagingSenderId: '487497986959',
-    projectId: 'rentme-548d8',
-    storageBucket: 'rentme-548d8.firebasestorage.app',
+    apiKey: 'AIzaSyCq2sUlDwzuUf3SW7mT4AC8PprfDCb9BRM',
+    appId: '1:958076113979:ios:e9dc8e8080d0e89d85b81e',
+    messagingSenderId: '958076113979',
+    projectId: 'rent-n-drive-f6468',
+    storageBucket: 'rent-n-drive-f6468.firebasestorage.app',
     iosBundleId: 'com.example.rentMe',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDZq-0gAhi-8HvX3TXv3k8KGB4OQJj_APo',
-    appId: '1:487497986959:web:9c1cbd05c331ab1ccf51fa',
-    messagingSenderId: '487497986959',
-    projectId: 'rentme-548d8',
-    authDomain: 'rentme-548d8.firebaseapp.com',
-    storageBucket: 'rentme-548d8.firebasestorage.app',
-    measurementId: 'G-E9LVED70SE',
+    apiKey: 'AIzaSyA3nS6WsxpjAKsTPffHHaxfhF-pvaWqjV0',
+    appId: '1:958076113979:web:36295da504a7845185b81e',
+    messagingSenderId: '958076113979',
+    projectId: 'rent-n-drive-f6468',
+    authDomain: 'rent-n-drive-f6468.firebaseapp.com',
+    storageBucket: 'rent-n-drive-f6468.firebasestorage.app',
+    measurementId: 'G-K4CEHMK6L6',
   );
 }
