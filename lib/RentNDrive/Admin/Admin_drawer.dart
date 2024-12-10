@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rent_me/RentNDrive/Admin/Admin_profile.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner%20Profile.dart';
-import 'package:rent_me/RentNDrive/Owner/Owner_Edit_car_details.dart';
+import 'package:rent_me/RentNDrive/Owner/jj.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_FeedBack_page.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Privacy_Policy.dart';
 import 'package:rent_me/RentNDrive/pagemain.dart';
@@ -63,7 +63,7 @@ class _Admin_settingState extends State<Admin_setting> {
             ListTile(
               leading: Icon(Icons.logout),
               title: Text('LogOut'),
-              onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => AdminApp(),));
+              onTap: () {Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AdminApp(),));
                 // Add logout functionality here
               },
             ),

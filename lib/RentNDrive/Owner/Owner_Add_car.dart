@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +14,14 @@ class Owner_Add_car extends StatefulWidget {
 }
 
 class _Owner_Add_carState extends State<Owner_Add_car> {
+
+  Future<QuerySnapshot> _getAcceptedCarDetails() async {
+    return await FirebaseFirestore.instance
+        .collection('carDetails')
+        .where('State', isEqualTo: 1)
+        .get();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,20 +66,23 @@ class _Owner_Add_carState extends State<Owner_Add_car> {
                   SizedBox(height: 20.h),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return Owner_Add_car_details();
-                      }));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                            return Owner_Add_car_details();
+                          }));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF416E29),
-                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                      padding:
+                      EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
                     child: Text(
                       'Add Car',
-                      style: GoogleFonts.poppins(fontSize: 16.sp, color: Colors.white),
+                      style: GoogleFonts.poppins(
+                          fontSize: 16.sp, color: Colors.white),
                     ),
                   ),
                 ],
@@ -78,18 +90,32 @@ class _Owner_Add_carState extends State<Owner_Add_car> {
             ),
           ),
           Expanded(
-            child: Column(
-              children: [
-                Expanded(
+            child: FutureBuilder<QuerySnapshot>(
+              future: _getAcceptedCarDetails(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return Center(child: Text('No accepted car data found'));
+                }
+                final carDetails = snapshot.data!.docs;
+
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: GridView.builder(
-                    itemCount: 4,
+                    itemCount: carDetails.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 10.0,
                       mainAxisSpacing: 10.0,
-                      childAspectRatio: 0.75, // Adjust as needed for card size
+                      childAspectRatio: 0.75,
                     ),
                     itemBuilder: (context, index) {
+                      final car = carDetails[index];
                       return Card(
                         margin: EdgeInsets.all(10.0),
                         shape: RoundedRectangleBorder(
@@ -100,7 +126,10 @@ class _Owner_Add_carState extends State<Owner_Add_car> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             gradient: LinearGradient(
-                              colors: [Color(0xFF4C7746), Color(0xFF416E29)],
+                              colors: [
+                                Colors.white38, // Light green
+                                Colors.white, // Warm white
+                              ],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
@@ -117,7 +146,7 @@ class _Owner_Add_carState extends State<Owner_Add_car> {
                                     topRight: Radius.circular(20),
                                   ),
                                   image: DecorationImage(
-                                    image: AssetImage("assets/Acura.png"), // Ensure this asset exists
+                                    image: NetworkImage(car['profile']),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -128,24 +157,25 @@ class _Owner_Add_carState extends State<Owner_Add_car> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Acura",
+                                          car['make'],
                                           style: GoogleFonts.poppins(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 25,
-                                            color: Colors.white,
+                                            color: Colors.black,
                                           ),
                                         ),
                                       ],
                                     ),
                                     SizedBox(height: 8),
                                     Text(
-                                      "Price: \$30/day",
+                                      "Price: \$${car['rent']}/day",
                                       style: GoogleFonts.poppins(
                                         fontSize: 20,
-                                        color: Colors.white,
+                                        color: Colors.black,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -158,11 +188,10 @@ class _Owner_Add_carState extends State<Owner_Add_car> {
                       );
                     },
                   ),
-                ),
-              ],
+                );
+              },
             ),
-          ),
-          // You can add more widgets here if needed
+          )
         ],
       ),
     );

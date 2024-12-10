@@ -48,6 +48,7 @@ dependencies:
   convex_bottom_bar: ^3.2.0
   sidebarx: ^0.17.1
   table_calendar: ^3.0.0
+  firebase_auth: ^5.3.3
 
 
 

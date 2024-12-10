@@ -23,150 +23,149 @@ class AdminHome extends StatefulWidget {
 class _AdminHomeState extends State<AdminHome> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return MaterialApp(
+      debugShowCheckedModeBanner: false, // Add this line to remove the debug banner
+      home: Scaffold(
+        appBar: AppBar(
           leading: Padding(
-        padding: const EdgeInsets.only(left: 20),
-        child: InkWell(onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Admin_setting(),));
-        },
-          child : CircleAvatar(
-            child: Icon(Icons.person),
-            radius: 50,
-          ),
-        ),
-      )),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10),
-        child: Column(children: [
-          /*Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Icon(Icons.person),
-            ],
-          ),*/
-          SizedBox(height: 20),
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: 2,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return Admin_Total_Cars();
-                      },
-                    ));
-                  },
-                  child: DashboardCard(
-                    icon: Icons.directions_car,
-                    label: 'Total Cars',
-                    value: '20',
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return Admin_Total_users();
-                      },
-                    ));
-                  },
-                  child: DashboardCard(
-                    icon: Icons.person,
-                    label: 'Total Users',
-                    value: '20',
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return Admin_user_payment_details();
-                      },
-                    ));
-                  },
-                  child: DashboardCard(
-                    icon: Icons.account_balance_wallet,
-                    label: 'Payment',
-                    value: '300',
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return Admin_Total_owners();
-                      },
-                    ));
-                  },
-                  child: DashboardCard(
-                    icon: Icons.people,
-                    label: 'Owners',
-                    value: '15',
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return Admin_Total_users_verify();
-                      },
-                    ));
-                  },
-                  child: DashboardCard(
-                    icon: Icons.verified_user,
-                    label: 'Verify User',
-                    value: '30',
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return Admin_owners_verify_list();
-                      },
-                    ));
-                  },
-                  child: DashboardCard(
-                    icon: Icons.verified_user,
-                    label: 'VerifyOwner ',
-                    value: '12',
-                  ),
-                ),
-              ],
+            padding: const EdgeInsets.only(left: 20),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Admin_setting(),));
+              },
+              child: CircleAvatar(
+                child: Icon(Icons.person),
+                radius: 50,
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 60),
-            child: InkWell(onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Admin_FeedBack(),));
-            },
-              child: Container(
-                width: 400,
-                height: 100,
-                decoration: BoxDecoration(
-                    color: Color(0xFF4C7746),
-                    borderRadius: BorderRadius.circular(20)),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 120),
-                  child: Row(
-                    children: [
-                    Icon(Icons.feedback,size: 40,color: Colors.white,),
-                      Text(
-                        "FeedBack",
-                        style: GoogleFonts.poppins(fontWeight: FontWeight.bold,fontSize: 23,color: Colors.white),
-                      ),
-
-                    ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Column(children: [
+            SizedBox(height: 20),
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return Admin_Total_Cars();
+                        },
+                      ));
+                    },
+                    child: DashboardCard(
+                      icon: Icons.directions_car,
+                      label: 'Total Cars',
+                      value: '20',
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return Admin_Total_users();
+                        },
+                      ));
+                    },
+                    child: DashboardCard(
+                      icon: Icons.person,
+                      label: 'Total Users',
+                      value: '20',
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return Admin_user_payment_details();
+                        },
+                      ));
+                    },
+                    child: DashboardCard(
+                      icon: Icons.account_balance_wallet,
+                      label: 'Payment',
+                      value: '300',
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return Admin_Total_owners();
+                        },
+                      ));
+                    },
+                    child: DashboardCard(
+                      icon: Icons.people,
+                      label: 'Owners',
+                      value: '15',
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return Admin_Total_users_verify();
+                        },
+                      ));
+                    },
+                    child: DashboardCard(
+                      icon: Icons.verified_user,
+                      label: 'Verify User',
+                      value: '30',
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return Admin_owners_verify_list();
+                        },
+                      ));
+                    },
+                    child: DashboardCard(
+                      icon: Icons.verified_user,
+                      label: 'Verify Owner',
+                      value: '12',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 60),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Admin_FeedBack(),));
+                },
+                child: Container(
+                  width: 400,
+                  height: 100,
+                  decoration: BoxDecoration(
+                      color: Color(0xFF4C7746),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 120),
+                    child: Row(
+                      children: [
+                        Icon(Icons.feedback, size: 40, color: Colors.white,),
+                        Text(
+                          "FeedBack",
+                          style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 23, color: Colors.white),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          )
-        ]),
+            )
+          ]),
+        ),
       ),
     );
   }

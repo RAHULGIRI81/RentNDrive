@@ -1,141 +1,168 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_me/RentNDrive/Admin/Admin_Total_owners_list.dart';
 
-void main() {
-  runApp(Admin_owner_details());
-}
-
 class Admin_owner_details extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: VehicleDetailsPage(),
-    );
-  }
-}
+  final String carId; // Add carId parameter
 
-class VehicleDetailsPage extends StatelessWidget {
+  Admin_owner_details({required this.carId});
+
+  Future<DocumentSnapshot> _getOwnerDetail() async {
+    return await FirebaseFirestore.instance.collection('carDetails').doc(carId).get();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Owner Details'),leading: IconButton(
-        icon: Icon(Icons.arrow_back),
-        onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => Admin_Total_owners(),)),
-        // Handle back button press
-      ),
+        title: Text('Owner Details'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Admin_Total_owners(),)),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text('Owner Name: ',style:TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                      Text('Rahul',style:TextStyle(fontWeight: FontWeight.w700,fontSize: 18),),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text('Phone: ',style:TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                      Text('0000000000',style:TextStyle(fontWeight: FontWeight.w700,fontSize: 18),),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text('Vehicle Make: ',style:TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                      Text('Aura',style:TextStyle(fontWeight: FontWeight.w700,fontSize: 18),),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text('Vehicle Model: ',style:TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                      Text('2024',style:TextStyle(fontWeight: FontWeight.w700,fontSize: 18),),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text('Year of Manufacture: ',style:TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                      Text('2021',style:TextStyle(fontWeight: FontWeight.w700,fontSize: 18),),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text('Gear Box: ',style:TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                      Text('Automatic',style:TextStyle(fontWeight: FontWeight.w700,fontSize: 18),),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text('Fual: ',style:TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                      Text('Petrol',style:TextStyle(fontWeight: FontWeight.w700,fontSize: 18),),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text('Total Distance: ',style:TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                      Text('20003',style:TextStyle(fontWeight: FontWeight.w700,fontSize: 18),),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text('Seat: ',style:TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                      Text('5',style:TextStyle(fontWeight: FontWeight.w700,fontSize: 18),),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text('Profile:'),
-                      SizedBox(width: 10,),
-                      Container(
-                        width: 200,
-                        height: 150,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black),
-                        ),child: Center(child: Icon(Icons.photo,size: 50,)),
-                      ),
-                    ],
-                  ),
+        child: FutureBuilder<DocumentSnapshot>(
+          future: _getOwnerDetail(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+            if (!snapshot.hasData || !snapshot.data!.exists) {
+              return Center(child: Text('No owner data found'));
+            }
 
-                  // Add profile picture here
+            final ownerDetail = snapshot.data!;
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   SizedBox(height: 10),
-                  Row(
+                  Table(
+                    columnWidths: {
+                      0: IntrinsicColumnWidth(),
+                      1: FlexColumnWidth(),
+                    },
                     children: [
-                      Text('Photos:'),
-                      SizedBox(width: 10,),
-                      Container(
-                        width: 200,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black),
-                        ),child: Center(child: Icon(Icons.photo_album,size: 50,)),
+                      TableRow(
+                        children: [
+                          Text('Owner Name: ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.black)),
+                          Text(ownerDetail['OwnerName'], style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20, color: Colors.black)),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          Text('Phone: ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.black)),
+                          Text(ownerDetail['OwnerPhone'], style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20, color: Colors.black)),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          Text('Vehicle Make: ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.black)),
+                          Text(ownerDetail['make'], style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20, color: Colors.black)),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          Text('Vehicle Model: ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.black)),
+                          Text(ownerDetail['model'], style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20, color: Colors.black)),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          Text('Year of Manufacture: ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.black)),
+                          Text(ownerDetail['year'], style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20, color: Colors.black)),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          Text('Gear Box: ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.black)),
+                          Text(ownerDetail['GearBox'], style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20, color: Colors.black)),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          Text('Fuel: ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.black)),
+                          Text(ownerDetail['Fuel'], style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20, color: Colors.black)),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          Text('Total Distance: ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.black)),
+                          Text(ownerDetail['distance'], style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20, color: Colors.black)),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          Text('Seat: ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.black)),
+                          Text(ownerDetail['seats'], style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20, color: Colors.black)),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          Text('Rent: ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.black)),
+                          Text(ownerDetail['rent'], style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20, color: Colors.black)),
+                        ],
                       ),
                     ],
                   ),
-                  // Add photos here
+
+
+
+
+
+                  SizedBox(height: 20),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text('Profile:'),
+                          SizedBox(width: 10),
+                          Container(
+                            width: 200,
+                            height: 150,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                            ),
+                            child: Image.network(
+                              ownerDetail['profile'],
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Text('Photos:'),
+                          SizedBox(width: 10),
+                          Container(
+                            width: 200,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                            ),
+                            child: Image.network(
+                              ownerDetail['carPhotos'],
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+
                 ],
               ),
-
-              SizedBox(height: 20),
-              Text(
-                'Approve or Edit the Rent: 15000',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

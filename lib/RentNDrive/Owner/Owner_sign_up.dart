@@ -1,9 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Login.dart';
-import 'package:rent_me/main.dart';
-
 
 class Owner_SignUp extends StatefulWidget {
   const Owner_SignUp({super.key});
@@ -15,21 +15,32 @@ class Owner_SignUp extends StatefulWidget {
 class _Owner_SignUpState extends State<Owner_SignUp> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController emailController = TextEditingController(); // Email Controller
+  final TextEditingController phoneController = TextEditingController(); // Phone Controller
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // Validation functions
   String? validateEmail(String? value) {
+    const emailRegExp = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
     if (value == null || value.isEmpty) {
-      return 'Please enter your email';
+      return 'Email is required';
+    } else if (!RegExp(emailRegExp).hasMatch(value)) {
+      return 'Enter a valid email';
     }
-    const pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
-    final regExp = RegExp(pattern);
-    if (!regExp.hasMatch(value)) {
-      return 'Please enter a valid email';
+    return null;
+  }
+
+  String? validatePhoneNumber(String? value) {
+    final phoneRegExp = RegExp(r'^\+?[0-9]{10,13}$');
+    if (value == null || value.isEmpty) {
+      return 'Phone number is required';
+    } else if (!phoneRegExp.hasMatch(value)) {
+      return 'Enter a valid phone number';
     }
     return null;
   }
@@ -55,18 +66,30 @@ class _Owner_SignUpState extends State<Owner_SignUp> {
   }
 
   // Sign-up function
-  void signUp(BuildContext context) {
+  Future<void> signUp(BuildContext context) async {
     if (formKey.currentState!.validate()) {
-      // Add your sign-up logic here
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Sign-Up Successful')),
-      );
+      try {
+        UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
+        );
 
-      // Navigate to the Home Page
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Owner_Login()),
-      );
+        await _firestore.collection('users').doc(userCredential.user!.uid).set({ 'email': emailController.text.trim(), 'phone': phoneController.text.trim(), 'name': nameController.text.trim(), });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Sign-Up Successful')),
+        );
+
+        // Navigate to the Login Page
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Owner_Login()),
+        );
+      } on FirebaseAuthException catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.message ?? 'Sign-Up Failed')),
+        );
+      }
     }
   }
 
@@ -90,7 +113,7 @@ class _Owner_SignUpState extends State<Owner_SignUp> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Sign up",
+                      "Owner Sign up",
                       style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold,
                         fontSize: 50.sp,
@@ -100,7 +123,8 @@ class _Owner_SignUpState extends State<Owner_SignUp> {
                     TextFormField(
                       controller: nameController,
                       decoration: InputDecoration(
-                        hintText: 'Name',hintStyle: TextStyle(color: Colors.black),
+                        hintText: 'Name',
+                        hintStyle: TextStyle(color: Colors.black),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                         ),
@@ -123,7 +147,8 @@ class _Owner_SignUpState extends State<Owner_SignUp> {
                     TextFormField(
                       controller: emailController,
                       decoration: InputDecoration(
-                        hintText: 'Email',hintStyle: TextStyle(color: Colors.black),
+                        hintText: 'Email',
+                        hintStyle: TextStyle(color: Colors.black),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                         ),
@@ -140,9 +165,30 @@ class _Owner_SignUpState extends State<Owner_SignUp> {
                     ),
                     SizedBox(height: 10.h),
                     TextFormField(
+                      controller: phoneController,
+                      decoration: InputDecoration(
+                        hintText: 'Phone Number',
+                        hintStyle: TextStyle(color: Colors.black),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            width: 2.0, // Change this value to set the thickness when not focused
+                          ),
+                        ),
+                      ),
+                      keyboardType: TextInputType.phone,
+                      validator: validatePhoneNumber,
+                    ),
+                    SizedBox(height: 10.h),
+                    TextFormField(
                       controller: passwordController,
                       decoration: InputDecoration(
-                        hintText: 'Password',hintStyle: TextStyle(color: Colors.black),
+                        hintText: 'Password',
+                        hintStyle: TextStyle(color: Colors.black),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                         ),
@@ -154,10 +200,9 @@ class _Owner_SignUpState extends State<Owner_SignUp> {
                           ),
                         ),
                         suffixIcon: IconButton(
-                          icon: Icon(color: Colors.black,
-                            _obscurePassword
-                                ? Icons.visibility
-                                : Icons.visibility_off,
+                          icon: Icon(
+                            color: Colors.black,
+                            _obscurePassword ? Icons.visibility : Icons.visibility_off,
                           ),
                           onPressed: () {
                             setState(() {
@@ -173,9 +218,15 @@ class _Owner_SignUpState extends State<Owner_SignUp> {
                     TextFormField(
                       controller: confirmPasswordController,
                       decoration: InputDecoration(
-                        hintText: 'Confirm Password',hintStyle: TextStyle(color: Colors.black),
+                        hintText: 'Confirm Password',
+                        hintStyle: TextStyle(color: Colors.black),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),borderSide: BorderSide(color: Colors.black,style: BorderStyle.solid,width: 10)
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            style: BorderStyle.solid,
+                            width: 2.0,
+                          ),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
@@ -185,10 +236,9 @@ class _Owner_SignUpState extends State<Owner_SignUp> {
                           ),
                         ),
                         suffixIcon: IconButton(
-                          icon: Icon(color: Colors.black,
-                            _obscureConfirmPassword
-                                ? Icons.visibility
-                                : Icons.visibility_off,
+                          icon: Icon(
+                            color: Colors.black,
+                            _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
                           ),
                           onPressed: () {
                             setState(() {
@@ -203,7 +253,7 @@ class _Owner_SignUpState extends State<Owner_SignUp> {
                     SizedBox(height: 20.h),
                     InkWell(
                       onTap: () {
-                        return signUp(context);
+                        signUp(context);
                       },
                       child: Container(
                         height: 50,
@@ -224,54 +274,6 @@ class _Owner_SignUpState extends State<Owner_SignUp> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20.h),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white,width: 2),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/google.webp', // Replace with the actual image path
-                              width: 20.0,
-                            ),
-                            SizedBox(width: 10.0),
-                            Text('Continue with Google',style: GoogleFonts.poppins(fontWeight: FontWeight.bold),),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10.h),
-
-                  Padding(
-                    padding: const EdgeInsets.only(left: 100),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Already have an account?",
-                          style: GoogleFonts.poppins(
-                            color: Colors.black,fontWeight: FontWeight.bold
-                          ),
-                        ),
-                        InkWell(onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Owner_Login(),));
-                        },
-                          child: Text(
-                            "Login",
-                            style: GoogleFonts.poppins(
-                              color: Colors.black,fontSize: 20.sp,fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-
 
                   ],
                 ),

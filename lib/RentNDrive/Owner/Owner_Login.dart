@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rent_me/RentNDrive/Admin/Admin_Home.dart';
-import 'package:rent_me/RentNDrive/Owner/Owner_Add_car.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Navigation.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_sign_up.dart';
-import 'package:rent_me/main.dart';
-
 
 class Owner_Login extends StatefulWidget {
   const Owner_Login({super.key});
@@ -20,14 +17,14 @@ class _Owner_LoginState extends State<Owner_Login> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Email validation function
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter your email';
     }
-    const pattern =
-        r'^[^@]+@[^@]+\.[^@]+$';
+    const pattern = r'^[^@]+@[^@]+\.[^@]+$';
     final regExp = RegExp(pattern);
     if (!regExp.hasMatch(value)) {
       return 'Please enter a valid email';
@@ -47,18 +44,27 @@ class _Owner_LoginState extends State<Owner_Login> {
   }
 
   // Login function
-  void login(BuildContext context) {
+  Future<void> login(BuildContext context) async {
     if (formKey.currentState!.validate()) {
-      // Add your login logic here
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login Successful')),
-      );
+      try {
+        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Login Successful')),
+        );
 
-      // Navigate to the Home Page
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Owner_Navigation()),
-      );
+        // Navigate to the Home Page
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Owner_Navigation()),
+        );
+      } on FirebaseAuthException catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.message ?? 'Login Failed')),
+        );
+      }
     }
   }
 
@@ -89,7 +95,7 @@ class _Owner_LoginState extends State<Owner_Login> {
                 TextFormField(
                   controller: emailController,
                   decoration: InputDecoration(
-                    hintText: 'Email',hintStyle: TextStyle(color: Colors.black),
+                    hintText: 'Email', hintStyle: TextStyle(color: Colors.black),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
@@ -115,8 +121,8 @@ class _Owner_LoginState extends State<Owner_Login> {
                 TextFormField(
                   controller: passwordController,
                   decoration: InputDecoration(
-                    hintText: 'Password',hintStyle: TextStyle(color: Colors.black),
-                    border: OutlineInputBorder(borderSide: BorderSide(width: 2.0,color: Colors.black),
+                    hintText: 'Password', hintStyle: TextStyle(color: Colors.black),
+                    border: OutlineInputBorder(borderSide: BorderSide(width: 2.0, color: Colors.black),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -152,7 +158,7 @@ class _Owner_LoginState extends State<Owner_Login> {
                 SizedBox(height: 20.h),
                 InkWell(
                   onTap: () {
-                    return login(context);
+                    login(context);
                   },
                   child: Container(
                     height: 50.h,
@@ -179,7 +185,7 @@ class _Owner_LoginState extends State<Owner_Login> {
                   child: Row(
                     children: [
                       Text(
-                        "Dont have an account?",
+                        "Don't have an account?",
                         style: GoogleFonts.poppins(fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
@@ -190,7 +196,7 @@ class _Owner_LoginState extends State<Owner_Login> {
                         child: Text(
                           "Sign up",
                           style: GoogleFonts.poppins(
-                            color: Colors.black,fontSize: 24,fontWeight: FontWeight.bold
+                              color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold
                           ),
                         ),
                       ),
@@ -205,7 +211,7 @@ class _Owner_LoginState extends State<Owner_Login> {
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white,width: 2),
+                      border: Border.all(color: Colors.white, width: 2),
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                     child: Row(
@@ -216,7 +222,7 @@ class _Owner_LoginState extends State<Owner_Login> {
                           width: 20.0.w,
                         ),
                         SizedBox(width: 10.0.w),
-                        Text('Continue with Google',style: GoogleFonts.poppins(fontWeight: FontWeight.bold,fontSize: 18),),
+                        Text('Continue with Google', style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 18),),
                       ],
                     ),
                   ),

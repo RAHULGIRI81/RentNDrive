@@ -1,370 +1,201 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:rent_me/RentNDrive/Owner/Owner_Add_car.dart';
-import 'package:rent_me/RentNDrive/Owner/Owner_Login.dart';
-import 'package:rent_me/RentNDrive/Owner/Owner_Navigation.dart';
-import 'package:rent_me/RentNDrive/Owner/Owner_Settings.dart';
-import 'package:rent_me/main.dart';
 
-class Owner_Edit_car_details extends StatefulWidget {
-  const Owner_Edit_car_details({super.key});
+class Owner_edit_car_details extends StatefulWidget {
+  final String carId;
+
+  Owner_edit_car_details({required this.carId});
 
   @override
-  State<Owner_Edit_car_details> createState() => _Owner_Edit_car_detailsState();
+  _Owner_edit_car_detailsState createState() => _Owner_edit_car_detailsState();
 }
 
-class _Owner_Edit_car_detailsState extends State<Owner_Edit_car_details> {
-  final formKey = GlobalKey<FormState>();
-  final TextEditingController makeController = TextEditingController();
-  final TextEditingController modelController = TextEditingController();
-  final TextEditingController yearController = TextEditingController();
-  final TextEditingController distanceController = TextEditingController();
-  final TextEditingController seatsController = TextEditingController();
-  final TextEditingController rentController = TextEditingController();
-  bool agreeToTerms = false;
+class _Owner_edit_car_detailsState extends State<Owner_edit_car_details> {
+  final _formKey = GlobalKey<FormState>();
+  late DocumentSnapshot carData;
+  bool _isLoading = true;
 
-  // Validation functions
-  String? validateYear(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter the year of manufacture';
-    }
-    return null;
+  late TextEditingController _ownerNameController;
+  late TextEditingController _ownerPhoneController;
+  late TextEditingController _makeController;
+  late TextEditingController _modelController;
+  late TextEditingController _yearController;
+  late TextEditingController _gearBoxController;
+  late TextEditingController _fuelController;
+  late TextEditingController _distanceController;
+  late TextEditingController _seatsController;
+  late TextEditingController _rentController;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCarDetails();
   }
 
-  String? validateDistance(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter the total distance';
-    }
-    return null;
+  Future<void> _fetchCarDetails() async {
+    carData = await FirebaseFirestore.instance
+        .collection('carDetails')
+        .doc(widget.carId)
+        .get();
+
+    setState(() {
+      _ownerNameController = TextEditingController(text: carData['OwnerName']);
+      _ownerPhoneController = TextEditingController(text: carData['OwnerPhone']);
+      _makeController = TextEditingController(text: carData['make']);
+      _modelController = TextEditingController(text: carData['model']);
+      _yearController = TextEditingController(text: carData['year'].toString());
+      _gearBoxController = TextEditingController(text: carData['GearBox']);
+      _fuelController = TextEditingController(text: carData['Fuel']);
+      _distanceController = TextEditingController(text: carData['distance']);
+      _seatsController = TextEditingController(text: carData['seats']);
+      _rentController = TextEditingController(text: carData['rent']);
+      _isLoading = false;
+    });
   }
 
-  String? validateSeats(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter the number of seats';
-    }
-    return null;
-  }
+  Future<void> _updateCarDetails() async {
+    if (_formKey.currentState!.validate()) {
+      await FirebaseFirestore.instance
+          .collection('carDetails')
+          .doc(widget.carId)
+          .update({
+        'OwnerName': _ownerNameController.text,
+        'OwnerPhone': _ownerPhoneController.text,
+        'make': _makeController.text,
+        'model': _modelController.text,
+        'year': int.parse(_yearController.text),
+        'GearBox': _gearBoxController.text,
+        'Fuel': _fuelController.text,
+        'distance': _distanceController.text,
+        'seats': _seatsController.text,
+        'rent': _rentController.text,
+      });
 
-  String? validateRent(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter the rent rate';
-    }
-    return null;
-  }
-
-  // Function to add car
-  void addCar(BuildContext context) {
-    if (formKey.currentState!.validate() && agreeToTerms) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Car added successfully')),
-      );
-    } else if (!agreeToTerms) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please agree to the terms and privacy policy')),
+        SnackBar(content: Text('Car details updated successfully')),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: Scaffold(appBar: AppBar(leading: IconButton(onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => Owner_Settings(),)), icon: Center(child: Icon(Icons.arrow_back_ios))),title: Text(
-        "Edit CAR DETAILS",
-        style: GoogleFonts.poppins(
-          fontWeight: FontWeight.bold,
-        ),
-      ),),
-        body: SingleChildScrollView(
-          child: Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Edit Car Details'),
+      ),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 10.h),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Vehicle Make",
-                              style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        TextFormField(
-                          controller: makeController,
-                          decoration: InputDecoration(
-                            hintText: 'Vehicle Make',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10.h),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Vehicle Model",
-                              style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        TextFormField(
-                          controller: modelController,
-                          decoration: InputDecoration(
-                            hintText: 'Vehicle Model',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10.h),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Year of Manufacture",
-                              style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        TextFormField(
-                          controller: yearController,
-                          decoration: InputDecoration(
-                            hintText: 'Year of Manufacture',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                          ),
-                          keyboardType: TextInputType.number,
-                          validator: validateYear,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10.h),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Gear Box Type",
-                              style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        DropdownButtonFormField<String>(
-                          decoration: InputDecoration(
-                            hintText: 'Gear Box',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                          ),
-                          items: ['Automatic', 'Manual']
-                              .map((label) => DropdownMenuItem(
-                            child: Text(label),
-                            value: label,
-                          ))
-                              .toList(),
-                          onChanged: (value) {},
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10.h),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Fual Type",
-                              style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        DropdownButtonFormField<String>(
-                          decoration: InputDecoration(
-                            hintText: 'Fuel',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                          ),
-                          items: ['Petrol', 'Diesel', 'Electric']
-                              .map((label) => DropdownMenuItem(
-                            child: Text(label),
-                            value: label,
-                          ))
-                              .toList(),
-                          onChanged: (value) {},
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10.h),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Total Distance Travel",
-                              style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        TextFormField(
-                          controller: distanceController,
-                          decoration: InputDecoration(
-                            hintText: 'Total Distance',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                          ),
-                          keyboardType: TextInputType.number,
-                          validator: validateDistance,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10.h),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Number Of Seats",
-                              style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        TextFormField(
-                          controller: seatsController,
-                          decoration: InputDecoration(
-                            hintText: 'Number of Seats',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                          ),
-                          keyboardType: TextInputType.number,
-                          validator: validateSeats,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10.h),
-                    Row(
-                      children: [
-                        Text('Profile Picture:',
-                          style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.bold,
-                          ),),
-                      ],
-                    ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('Upload jpg'),
-                    ),
-                    SizedBox(height: 10.h),
-                    Row(
-                      children: [
-                        Text('Car Photos:',
-                          style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.bold,
-                          ),),
-                      ],
-                    ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('Upload jpg'),
-                    ),
-
-                    SizedBox(height: 10.h),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Rent Rate",
-                              style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        TextFormField(
-                          controller: rentController,
-                          decoration: InputDecoration(
-                            hintText: 'Rent Rate',
-                            prefixText: '\$',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                          ),
-                          keyboardType: TextInputType.number,
-                          validator: validateRent,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10.h),
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: agreeToTerms,
-                          onChanged: (value) {
-                            setState(() {
-                              agreeToTerms = value ?? false;
-                            });
-                          },
-                        ),
-                        const Text('I agree to the Terms & Privacy policy'),
-                      ],
-                    ),
-                    SizedBox(height: 10.h),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Owner_Navigation(),));
-                      },
-                      child: Container(
-                        height: 60.h,
-                        width: 400.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(40),
-                          color: Color(0xFF416E29),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Edit Car Details",
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20.sp,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20.h),
-                  ],
-                ),
+              TextFormField(
+                controller: _ownerNameController,
+                decoration: InputDecoration(labelText: 'Owner Name'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the owner name';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _ownerPhoneController,
+                decoration: InputDecoration(labelText: 'Owner Phone'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the owner phone';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _makeController,
+                decoration: InputDecoration(labelText: 'Vehicle Make'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the vehicle make';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _modelController,
+                decoration: InputDecoration(labelText: 'Vehicle Model'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the vehicle model';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _yearController,
+                decoration: InputDecoration(labelText: 'Year of Manufacture'),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the year of manufacture';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _gearBoxController,
+                decoration: InputDecoration(labelText: 'Gear Box'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the gear box type';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _fuelController,
+                decoration: InputDecoration(labelText: 'Fuel'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the fuel type';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _distanceController,
+                decoration: InputDecoration(labelText: 'Total Distance'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the total distance';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _seatsController,
+                decoration: InputDecoration(labelText: 'Seats'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the number of seats';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _rentController,
+                decoration: InputDecoration(labelText: 'Rent'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the rent amount';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _updateCarDetails,
+                child: Text('Update Details'),
               ),
             ],
           ),

@@ -1,34 +1,28 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Add_car.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Login.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Navigation.dart';
-import 'package:rent_me/RentNDrive/Owner/Owner_Privacy_Policy.dart';
+import 'package:rent_me/RentNDrive/Owner/Owner_Settings.dart';
 import 'package:rent_me/main.dart';
 
-class Owner_Add_car_details extends StatefulWidget {
-  const Owner_Add_car_details({super.key});
+class Owner_Edit_car_details extends StatefulWidget {
+  const Owner_Edit_car_details({super.key});
 
   @override
-  State<Owner_Add_car_details> createState() => _Owner_Add_car_detailsState();
+  State<Owner_Edit_car_details> createState() => _Owner_Edit_car_detailsState();
 }
 
-class _Owner_Add_car_detailsState extends State<Owner_Add_car_details> {
+class _Owner_Edit_car_detailsState extends State<Owner_Edit_car_details> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController makeController = TextEditingController();
   final TextEditingController modelController = TextEditingController();
   final TextEditingController yearController = TextEditingController();
   final TextEditingController distanceController = TextEditingController();
   final TextEditingController seatsController = TextEditingController();
-  final TextEditingController profileController = TextEditingController();
-  final TextEditingController carphotosController = TextEditingController();
   final TextEditingController rentController = TextEditingController();
   bool agreeToTerms = false;
-  String?_selected_item1;
-  String?_selected_item2;
 
   // Validation functions
   String? validateYear(String? value) {
@@ -59,110 +53,34 @@ class _Owner_Add_car_detailsState extends State<Owner_Add_car_details> {
     return null;
   }
 
-
-  Future<void> addCarDetails(BuildContext context) async {
-    if (!agreeToTerms) {
+  // Function to add car
+  void addCar(BuildContext context) {
+    if (formKey.currentState!.validate() && agreeToTerms) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("You must agree to the privacy policy.", style: TextStyle(color: Colors.red))),
+        const SnackBar(content: Text('Car added successfully')),
       );
-      return;
-    }
-
-    if (makeController.text.isEmpty ||
-        modelController.text.isEmpty ||
-        yearController.text.isEmpty ||
-        distanceController.text.isEmpty ||
-        seatsController.text.isEmpty ||
-        profileController.text.isEmpty ||
-        carphotosController.text.isEmpty ||
-        rentController.text.isEmpty ||
-        _selected_item2 == null || _selected_item1 == null ) {
+    } else if (!agreeToTerms) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("All fields are required.", style: TextStyle(color: Colors.red))),
+        const SnackBar(content: Text('Please agree to the terms and privacy policy')),
       );
-      return;
     }
-
-    try {
-      // Get current user ID
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("No user is currently signed in.")),
-        );
-        return;
-      }
-
-      // Fetch user data from Firestore
-      DocumentSnapshot userData = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-      if (!userData.exists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("User data not found.")),
-        );
-        return;
-      }
-
-      // Add car details including user data
-      await FirebaseFirestore.instance.collection("carDetails").add({
-        "make": makeController.text,
-        "model": modelController.text,
-        "year": yearController.text,
-        "distance": distanceController.text,
-        "seats": seatsController.text,
-        "profile": profileController.text,
-        "carPhotos": carphotosController.text,
-        "rent": rentController.text,
-        "GearBox": _selected_item1,
-        "Fuel": _selected_item2,
-        "OwnerName": userData['name'],
-        "OwnerPhone": userData['phone'],
-        "OwnerEmail": userData['email'],
-        "OwnerId": user.uid,
-        "State":0,
-      });
-      print("Data added successfully");
-    } catch (e) {
-      print("Failed to add data: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to add data")),
-      );
-      return;
-    }
-
-    Navigator.push(context, MaterialPageRoute(
-      builder: (context) {
-        return Owner_Add_car();
-      },
-    ));
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Owner_Navigation(),
-                  )),
-              icon: Center(child: Icon(Icons.arrow_back_ios))),
-          title: Text(
-            "Add Car",
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+      child: Scaffold(appBar: AppBar(leading: IconButton(onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => Owner_Settings(),)), icon: Center(child: Icon(Icons.arrow_back_ios))),title: Text(
+        "Edit CAR DETAILS",
+        style: GoogleFonts.poppins(
+          fontWeight: FontWeight.bold,
         ),
+      ),),
         body: SingleChildScrollView(
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 40.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -254,26 +172,21 @@ class _Owner_Add_car_detailsState extends State<Owner_Add_car_details> {
                           ],
                         ),
                         DropdownButtonFormField<String>(
-                value: _selected_item2,
-                decoration: InputDecoration(
-                  hintText: 'Gear Box',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-                items: ['Automatic', 'Manual']
-                    .map((label) => DropdownMenuItem(
-                  child: Text(label),
-                  value: label, // Assign label as the value
-                ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selected_item2 = value; // Update state variable when selection changes
-                  });
-                },
-              ),
-            ],
+                          decoration: InputDecoration(
+                            hintText: 'Gear Box',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                          items: ['Automatic', 'Manual']
+                              .map((label) => DropdownMenuItem(
+                            child: Text(label),
+                            value: label,
+                          ))
+                              .toList(),
+                          onChanged: (value) {},
+                        ),
+                      ],
                     ),
                     SizedBox(height: 10.h),
                     Column(
@@ -288,28 +201,22 @@ class _Owner_Add_car_detailsState extends State<Owner_Add_car_details> {
                             ),
                           ],
                         ),
-                DropdownButtonFormField<String>(
-                  value: _selected_item1,
-                  decoration: InputDecoration(
-                    hintText: 'Fuel',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                  items: ['Petrol', 'Diesel', 'Electric', 'Hybrid']
-                      .map((label) => DropdownMenuItem(
-                    child: Text(label),
-                    value: label,
-                  ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selected_item1 = value;
-                    });
-                  },
-                )
-
-                ],
+                        DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            hintText: 'Fuel',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                          items: ['Petrol', 'Diesel', 'Electric']
+                              .map((label) => DropdownMenuItem(
+                            child: Text(label),
+                            value: label,
+                          ))
+                              .toList(),
+                          onChanged: (value) {},
+                        ),
+                      ],
                     ),
                     SizedBox(height: 10.h),
                     Column(
@@ -366,57 +273,30 @@ class _Owner_Add_car_detailsState extends State<Owner_Add_car_details> {
                     SizedBox(height: 10.h),
                     Row(
                       children: [
-                        Text(
-                          'Profile Picture:',
+                        Text('Profile Picture:',
                           style: GoogleFonts.poppins(
                             fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                          ),),
                       ],
                     ),
-                    TextFormField(
-                      controller: profileController,
-                      decoration: InputDecoration(
-                        labelText: 'Image Path',
-                        hintText: 'Enter the image path or URL',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: () {
-                        String imagePath = profileController.text;
-                        print('Image path: $imagePath');
-                      },
-                      child: Text('Submit'),
+                      onPressed: () {},
+                      child: const Text('Upload jpg'),
                     ),
                     SizedBox(height: 10.h),
                     Row(
                       children: [
-                        Text(
-                          'Car Photos:',
+                        Text('Car Photos:',
                           style: GoogleFonts.poppins(
                             fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                          ),),
                       ],
                     ),
-                    TextFormField(
-                      controller: carphotosController,
-                      decoration: InputDecoration(
-                        labelText: 'Image Path',
-                        hintText: 'Enter the image path or URL',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: () {
-                        String imagePath = carphotosController.text;
-                        print('Image path: $imagePath');
-                      },
-                      child: Text('Submit'),
+                      onPressed: () {},
+                      child: const Text('Upload jpg'),
                     ),
+
                     SizedBox(height: 10.h),
                     Column(
                       children: [
@@ -455,19 +335,13 @@ class _Owner_Add_car_detailsState extends State<Owner_Add_car_details> {
                             });
                           },
                         ),
-                        Row(
-                          children: [
-                            const Text('I agree to the'), InkWell(onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => Owner_Privacy_Policy(),));
-                            },child: Text('Terms & Privacy policy',style: TextStyle(fontWeight:FontWeight.w600),)),
-                          ],
-                        ),
+                        const Text('I agree to the Terms & Privacy policy'),
                       ],
                     ),
                     SizedBox(height: 10.h),
                     InkWell(
                       onTap: () {
-                        addCarDetails(context);
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Owner_Navigation(),));
                       },
                       child: Container(
                         height: 60.h,
@@ -478,7 +352,7 @@ class _Owner_Add_car_detailsState extends State<Owner_Add_car_details> {
                         ),
                         child: Center(
                           child: Text(
-                            "Add Car",
+                            "Edit Car Details",
                             style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

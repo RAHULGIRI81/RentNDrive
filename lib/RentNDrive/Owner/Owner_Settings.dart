@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner%20Profile.dart';
-import 'package:rent_me/RentNDrive/Owner/Owner_Edit_car_details.dart';
+import 'package:rent_me/RentNDrive/Owner/Owner_view_cars.dart';
+import 'package:rent_me/RentNDrive/Owner/jj.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_FeedBack_page.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Navigation.dart';
 import 'package:rent_me/RentNDrive/Owner/Owner_Privacy_Policy.dart';
 import 'package:rent_me/RentNDrive/pagemain.dart';
+
 import 'package:rent_me/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Owner_Settings extends StatefulWidget {
   const Owner_Settings({super.key});
@@ -19,9 +22,20 @@ class Owner_Settings extends StatefulWidget {
 class _Owner_SettingsState extends State<Owner_Settings> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar( title: Text('Settings'), leading: IconButton( icon: Icon(Icons.arrow_back), onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => Owner_Navigation(),));}, ), ),
+    final String OwnerId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Settings'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => Owner_Navigation(),));
+          },
+        ),
+      ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 70,right: 20,left: 20),
+        padding: const EdgeInsets.only(top: 70, right: 20, left: 20),
         child: Column(
           children: [
             CircleAvatar(
@@ -38,19 +52,29 @@ class _Owner_SettingsState extends State<Owner_Settings> {
             ),
             SizedBox(height: 20.h),
             ElevatedButton(
-              onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => Owner_Profile(),));},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Owner_Profile(),));
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF416E29),
               ),
-              child: Text('Edit Profile',style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.bold),),
+              child: Text(
+                'Edit Profile',
+                style: GoogleFonts.poppins(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
             ),
             SizedBox(height: 20.h),
-            GestureDetector(onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return Owner_Edit_car_details();
-              },));
-            },
-              child: Container(decoration: BoxDecoration(border: Border.all(color: Colors.black,width: 2,),borderRadius: BorderRadius.circular(20)),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return Owner_cars_list();
+                },));
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black, width: 2,),
+                  borderRadius: BorderRadius.circular(20),
+                ),
                 child: ListTile(
                   leading: Icon(Icons.edit),
                   title: Text('Edit Vehicle Details'),
@@ -58,41 +82,50 @@ class _Owner_SettingsState extends State<Owner_Settings> {
                 ),
               ),
             ),
-            SizedBox(height: 20.h,),
-            InkWell(onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return Owner_Privacy_Policy();
-              },));
-            },
-              child: Container(decoration: BoxDecoration(border: Border.all(color: Colors.black,width: 2,),borderRadius: BorderRadius.circular(20)),
+            SizedBox(height: 20.h),
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return Owner_Privacy_Policy();
+                },));
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black, width: 2,),
+                  borderRadius: BorderRadius.circular(20),
+                ),
                 child: ListTile(
                   leading: Icon(Icons.description),
                   title: Text('Privacy Policy'),
                   trailing: Icon(Icons.arrow_forward_ios),
-
                 ),
               ),
             ),
-            SizedBox(height: 20.h,),
-            InkWell(onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return Owner_FeedBack();
-              },));
-            },
-              child: Container(decoration: BoxDecoration(border: Border.all(color: Colors.black,width: 2,),borderRadius: BorderRadius.circular(20)),
+            SizedBox(height: 20.h),
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return Owner_FeedBack();
+                },));
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black, width: 2,),
+                  borderRadius: BorderRadius.circular(20),
+                ),
                 child: ListTile(
                   leading: Icon(Icons.feedback),
                   title: Text('feedBack'),
                   trailing: Icon(Icons.arrow_forward_ios),
-
                 ),
               ),
             ),
-            SizedBox(height: 200.h,),
+            SizedBox(height: 180.h),
             ListTile(
               leading: Icon(Icons.logout),
-              title: Text('LogOut'),onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => AdminApp(),));
+              title: Text('LogOut'),
+              onTap: () {
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AdminApp(),));
               },
             ),
           ],
